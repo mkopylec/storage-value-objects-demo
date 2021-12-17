@@ -1,5 +1,6 @@
 package com.github.mkopylec.storage.core
 
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container
 import com.github.mkopylec.storage.core.container.Containers
 import com.github.mkopylec.storage.core.container.Item
@@ -20,7 +21,7 @@ class ContainerItemInserter(
         val insertedItem = InsertedItem(item.identifier)
         containers.saveContainer(container)
         insertedItem
-    } catch (e: IllegalArgumentException) {
+    } catch (e: InvariantViolation) {
         throw IllegalStateException("Item not inserted in container", e)
     }
 }

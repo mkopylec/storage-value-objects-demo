@@ -1,6 +1,7 @@
 package com.github.mkopylec.storage.core
 
 import com.github.mkopylec.storage.core.LoadedContainer.InsertedItem
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container
 import com.github.mkopylec.storage.core.container.Container.ItemsQuantity
 import com.github.mkopylec.storage.core.container.Containers
@@ -25,7 +26,7 @@ class ContainerLoader(
             container.itemsWeight?.unit,
             items = container.mapItems { InsertedItem(it.identifier, it.name, it.weight.value, it.weight.unit) }
         )
-    } catch (e: IllegalArgumentException) {
+    } catch (e: InvariantViolation) {
         throw IllegalStateException("Container not loaded", e)
     }
 }
