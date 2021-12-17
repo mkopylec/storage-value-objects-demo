@@ -20,7 +20,7 @@ Computations on domain objects can be split into multiple methods invocations ca
 [these methods needs to be invoked one after another to prevent items modification during total weight calculation](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L18-L19)
 
 ##### 2
-- some domain logic can be duplicated:
+- some domain logic can be duplicated [issues 1](#issue-1):
   - weight value invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L19) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L21)
   - weight unit invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L20) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L22)
 - methods and constructors arguments can be accidentally passed in wrong order because many of them have the same type:
