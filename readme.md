@@ -13,9 +13,13 @@ One way to implement the storage domain model is to use custom classes only for 
 Any other values can be represented as primitive or built-in types.
 Domain invariant violations can also be represented as built-in types (exceptions).
 This kind of implementation suffers from several issues:
+
+##### 1
 - computations on domain objects can be split into multiple methods invocations causing the result to be inconsistent:
   - [calculating container items total weight is split into "calculate weight value" and "calculate weight unit"](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L28-L32);
   [these methods needs to be invoked one after another to prevent items modification during total weight calculation](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L18-L19)
+
+##### 2
 - some domain logic can be duplicated:
   - weight value invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L19) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L21)
   - weight unit invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L20) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L22)
