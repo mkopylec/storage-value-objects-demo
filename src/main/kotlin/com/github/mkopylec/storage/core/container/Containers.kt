@@ -23,9 +23,9 @@ class Containers(
 
     fun saveContainer(container: Container) = repository.save(container)
 
-    fun loadContainer(itemToInsert: ItemToInsert): Container = loadContainer(Identifier(itemToInsert.containerIdentifier))
+    fun loadContainer(itemToInsert: ItemToInsert): Container = loadContainer(itemToInsert.containerIdentifier)
 
-    fun loadContainer(containerToLoad: ContainerToLoad): Container = loadContainer(Identifier(containerToLoad.identifier))
+    fun loadContainer(containerToLoad: ContainerToLoad): Container = loadContainer(containerToLoad.identifier)
 
-    private fun loadContainer(identifier: Identifier): Container = repository.findByIdentifier(identifier) ?: throw IllegalArgumentException("Missing container: identifier=$identifier")
+    private fun loadContainer(identifier: String): Container = repository.findByIdentifier(identifier) ?: throw IllegalArgumentException("Missing container: identifier=$identifier")
 }
