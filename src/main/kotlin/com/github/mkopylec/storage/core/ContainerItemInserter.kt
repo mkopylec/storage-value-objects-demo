@@ -1,7 +1,6 @@
 package com.github.mkopylec.storage.core
 
 import com.github.mkopylec.storage.core.container.Containers
-import com.github.mkopylec.storage.core.container.Item
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -11,7 +10,7 @@ class ContainerItemInserter(
 
     fun insertItemInContainer(itemToInsert: ItemToInsert): InsertedItem = try {
         val container = containers.loadContainer(itemToInsert)
-        val item = Item(itemToInsert.name, itemToInsert.weightValue, itemToInsert.weightUnit)
+        val item = containers.createItem(itemToInsert)
         container.insertItem(item)
         val insertedItem = InsertedItem(item.identifier)
         containers.saveContainer(container)
