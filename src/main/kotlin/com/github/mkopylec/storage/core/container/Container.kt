@@ -1,12 +1,18 @@
 package com.github.mkopylec.storage.core.container
 
+import java.math.BigDecimal
+
 class Container private constructor(
-    val identifier: Identifier,
-    val maximumWeight: Weight,
+    identifier: String,
+    maximumWeightValue: BigDecimal,
+    maximumWeightUnit: String,
     items: List<Item>
 ) {
 
-    constructor(identifier: Identifier, maximumWeight: Weight) : this(identifier, maximumWeight, mutableListOf())
+    constructor(identifier: String, maximumWeightValue: BigDecimal, maximumWeightUnit: String) : this(identifier, maximumWeightValue, maximumWeightUnit, mutableListOf())
+
+    val identifier = Identifier(identifier)
+    val maximumWeight = Weight(maximumWeightValue, maximumWeightUnit)
 
     private val items: MutableList<Item> = items.toMutableList()
 
