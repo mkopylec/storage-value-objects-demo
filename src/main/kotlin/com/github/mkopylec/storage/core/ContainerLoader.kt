@@ -27,7 +27,7 @@ class ContainerLoader(
             items = container.mapItems { InsertedItem(it.identifier, it.name, it.weight.value, it.weight.unit) }
         )
     } catch (e: InvariantViolation) {
-        throw IllegalStateException("Container not loaded", e)
+        throw ContainerNotLoaded(e)
     }
 }
 
@@ -61,3 +61,5 @@ data class LoadedContainer private constructor(
                 this(identifier.value, name.value, weightValue.value, weightUnit.value)
     }
 }
+
+private class ContainerNotLoaded(violation: InvariantViolation) : UseCaseViolation(violation)

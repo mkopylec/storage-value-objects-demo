@@ -15,7 +15,7 @@ class ContainerAdder(
         val container = containers.createContainer(containerToAdd)
         containers.saveContainer(container)
     } catch (e: InvariantViolation) {
-        throw IllegalStateException("Container not added", e)
+        throw ContainerNotAdded(e)
     }
 }
 
@@ -29,3 +29,5 @@ data class ContainerToAdd(
     fun maximumWeightValue() = Value(maximumWeightValue)
     fun maximumWeightUnit() = Unit.from(maximumWeightUnit)
 }
+
+private class ContainerNotAdded(violation: InvariantViolation) : UseCaseViolation(violation)

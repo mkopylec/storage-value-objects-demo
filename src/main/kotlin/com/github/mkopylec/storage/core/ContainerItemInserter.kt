@@ -22,7 +22,7 @@ class ContainerItemInserter(
         containers.saveContainer(container)
         insertedItem
     } catch (e: InvariantViolation) {
-        throw IllegalStateException("Item not inserted in container", e)
+        throw ItemNotInsertedInContainer(e)
     }
 }
 
@@ -48,3 +48,5 @@ data class InsertedItem private constructor(
         operator fun invoke(identifier: Item.Identifier) = InsertedItem(identifier.value)
     }
 }
+
+private class ItemNotInsertedInContainer(violation: InvariantViolation) : UseCaseViolation(violation)
