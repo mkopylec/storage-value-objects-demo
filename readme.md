@@ -42,7 +42,7 @@ It's hard to catch only use case violations in the api layer because the excepti
 - when use case is violated an `IllegalStateException` is thrown but [the container repository implementation can also throw it](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/ContainerRepository.kt#L5-L6)
 
 ##### Issue 6
-It's hard to map domain invariant violation to some meaningful error code because all the violations are of the same type: 
+It's hard to map domain invariant violation to some meaningful error code because all the violations are of the same type:
 - all invariant violations are represented by `IllegalArgumentException`
 
 ##### Issue 7
