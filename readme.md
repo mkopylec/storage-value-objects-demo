@@ -3,6 +3,8 @@ The project demonstrates the benefits of using terms and values from [domain ubi
 
 ### The domain
 The project implements a simple application for managing storage containers for storing various items.
+Every item is named and weight.
+Every container has limited capacity described by the maximum weight, therefore a limited number of items can be inserted in the container.
 There are three use cases implemented:
 - adding a container
 - inserting an item in a container
