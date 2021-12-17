@@ -9,16 +9,16 @@ There are three use cases implemented:
 - loading a container
 
 ### The problem
-One way to implement the storage domain model is to use custom classes only for aggregates (i.e. container) and for collection types inside aggregates (i.e. item).
-Any other values are represented as primitive or built-in types.
-Domain invariant violations are also represented as built-in types (exceptions).
-This kind of implementation can have several issues:
+One way to implement the storage domain model is to use custom classes only for aggregate (container) and for collection type inside aggregate (item).
+Any other values can be represented as primitive or built-in types.
+Domain invariant violations can also be represented as built-in types (exceptions).
+This kind of implementation suffers from several issues:
 - computations on domain objects can be split into multiple methods invocations causing the result to be inconsistent:
   - calculating container items total weight is split into "calculate weight value" and "calculate weight unit";
   these methods needs to be invoked one after another to prevent items modification during total weight calculation
-- a single domain invariant can be forced to be checked multiple times:
-  - weight value is checked in container and item
-  - weight unit is checked in container and item
+- some domain logic can be duplicated:
+  - weight value invariant is checked in container and item
+  - weight unit invariant is checked in container and item
 - methods and constructors arguments can be accidentally passed in wrong order because many of them have the same type:
   - container identifier can be passed as maximum weight unit when constructing the container 
   - item name can be passed as container identifier when loading container by identifier

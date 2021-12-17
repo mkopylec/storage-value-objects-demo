@@ -27,6 +27,4 @@ class Item private constructor(
         KILOGRAM -> weightValue * valueOf(1000)
         else -> weightValue / valueOf(1000)
     }
-
-    override fun toString(): String = "Item(identifier=$identifier, name='$name', weight='$weightValue $weightUnit')"
 }
