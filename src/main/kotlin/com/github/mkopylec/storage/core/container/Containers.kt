@@ -8,7 +8,7 @@ class Containers(
     private val repository: ContainerRepository
 ) {
 
-    fun createContainer(containerToAdd: ContainerToAdd) = Container(containerToAdd.identifier, containerToAdd.maximumWeightValue, containerToAdd.maximumWeightUnit)
+    fun createContainer(containerToAdd: ContainerToAdd) = Container(containerToAdd.identifier, Weight(containerToAdd.maximumWeightValue, containerToAdd.maximumWeightUnit))
 
     fun saveContainer(container: Container) = repository.save(container)
 
