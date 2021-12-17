@@ -1,6 +1,11 @@
 package com.github.mkopylec.storage.core
 
+import com.github.mkopylec.storage.core.container.Container
 import com.github.mkopylec.storage.core.container.Containers
+import com.github.mkopylec.storage.core.container.Item
+import com.github.mkopylec.storage.core.container.Item.Name
+import com.github.mkopylec.storage.core.container.Weight.Unit
+import com.github.mkopylec.storage.core.container.Weight.Value
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -12,7 +17,7 @@ class ContainerItemInserter(
         val container = containers.loadContainer(itemToInsert)
         val item = containers.createItem(itemToInsert)
         container.insertItem(item)
-        val insertedItem = InsertedItem(item.identifier.value)
+        val insertedItem = InsertedItem(item.identifier)
         containers.saveContainer(container)
         insertedItem
     } catch (e: IllegalArgumentException) {
@@ -21,12 +26,24 @@ class ContainerItemInserter(
 }
 
 data class ItemToInsert(
-    val name: String,
-    val weightValue: BigDecimal,
-    val weightUnit: String,
-    val containerIdentifier: String
-)
+    private val name: String,
+    private val weightValue: BigDecimal,
+    private val weightUnit: String,
+    private val containerIdentifier: String
+) {
 
-data class InsertedItem(
+    fun name() = Name(name)
+    fun weightValue() = Value(weightValue)
+    fun weightUnit() = Unit.from(weightUnit)
+    fun containerIdentifier() = Container.Identifier(containerIdentifier)
+}
+
+data class InsertedItem private constructor(
     val identifier: UUID
-)
+) {
+
+    companion object {
+
+        operator fun invoke(identifier: Item.Identifier) = InsertedItem(identifier.value)
+    }
+}
