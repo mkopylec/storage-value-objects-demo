@@ -12,7 +12,7 @@ class ContainerItemInserter(
         val container = containers.loadContainer(itemToInsert)
         val item = containers.createItem(itemToInsert)
         container.insertItem(item)
-        val insertedItem = InsertedItem(item.identifier)
+        val insertedItem = InsertedItem(item.identifier.value)
         containers.saveContainer(container)
         insertedItem
     } catch (e: IllegalArgumentException) {
