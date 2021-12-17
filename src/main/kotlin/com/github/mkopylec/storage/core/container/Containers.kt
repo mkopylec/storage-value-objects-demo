@@ -4,6 +4,7 @@ import com.github.mkopylec.storage.core.ContainerToAdd
 import com.github.mkopylec.storage.core.ContainerToLoad
 import com.github.mkopylec.storage.core.ItemToInsert
 import com.github.mkopylec.storage.core.container.Container.Identifier
+import com.github.mkopylec.storage.core.container.Item.Name
 import com.github.mkopylec.storage.core.container.Weight.Unit
 import com.github.mkopylec.storage.core.container.Weight.Value
 
@@ -17,7 +18,7 @@ class Containers(
     )
 
     fun createItem(itemToInsert: ItemToInsert) = Item(
-        Item.Name(itemToInsert.name),
+        Name(itemToInsert.name),
         Weight(Value(itemToInsert.weightValue), Unit.from(itemToInsert.weightUnit))
     )
 
