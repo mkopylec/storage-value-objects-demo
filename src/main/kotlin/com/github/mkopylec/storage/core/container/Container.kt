@@ -1,12 +1,17 @@
 package com.github.mkopylec.storage.core.container
 
+import java.math.BigDecimal
+
 class Container private constructor(
     val identifier: String,
-    val maximumWeight: Weight,
+    maximumWeightValue: BigDecimal,
+    maximumWeightUnit: String,
     items: List<Item>
 ) {
 
-    constructor(identifier: String, maximumWeight: Weight) : this(identifier, maximumWeight, mutableListOf())
+    constructor(identifier: String, maximumWeightValue: BigDecimal, maximumWeightUnit: String) : this(identifier, maximumWeightValue, maximumWeightUnit, mutableListOf())
+
+    val maximumWeight = Weight(maximumWeightValue, maximumWeightUnit)
 
     init {
         if (!identifier.matches(identifierPattern)) throw IllegalArgumentException("Invalid container identifier: identifier=$identifier")
