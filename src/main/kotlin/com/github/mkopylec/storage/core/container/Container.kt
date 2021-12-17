@@ -48,6 +48,8 @@ class Container private constructor(
 
     fun <R> mapItems(transform: (Item) -> R): List<R> = items.map(transform)
 
+    override fun toString(): String = "Container(identifier='$identifier', maximumWeight='$maximumWeightValue $maximumWeightUnit', items=$items)"
+
     companion object {
 
         private val identifierPattern = Regex("[A-Z]{8}")
