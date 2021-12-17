@@ -5,19 +5,16 @@ import java.math.BigDecimal.ZERO
 import java.math.BigDecimal.valueOf
 
 class Weight(
-    value: BigDecimal,
-    unit: String
+    val value: Value,
+    val unit: Unit
 ) : Comparable<Weight> {
 
-    val value = Value(value)
-    val unit = Unit.from(unit)
-
-    operator fun plus(other: Weight) = Weight((value + other.to(unit).value).value, unit.value)
+    operator fun plus(other: Weight) = Weight(value + other.to(unit).value, unit)
 
     private fun to(unit: Unit): Weight = when (unit) {
         this.unit -> this
-        is Unit.Kilogram -> Weight((value * 1000).value, unit.value)
-        is Unit.Tonne -> Weight((value / 1000).value, unit.value)
+        is Unit.Kilogram -> Weight(value * 1000, unit)
+        is Unit.Tonne -> Weight(value / 1000, unit)
     }
 
     override fun compareTo(other: Weight): Int = value.compareTo(other.to(unit).value)
