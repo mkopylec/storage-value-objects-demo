@@ -99,3 +99,12 @@ Value objects are powerful, they:
 - allow moving most of the entities' behaviour inside them
 - are immutable, so they can be safely used in multithreaded environment
 - have names that are known to domain experts, so the communication between developers and experts is easier
+
+Naming exceptions using business names results in very descriptive stack traces.
+Such a stack trace can even be understandable for a non-technical person:
+```
+com.github.mkopylec.storage.core.ContainerNotAdded: INVALID_CONTAINER_IDENTIFIER
+	at ...
+Caused by: com.github.mkopylec.storage.core.container.InvalidContainerIdentifier: identifier=i_am_invalid
+	at ...
+```
