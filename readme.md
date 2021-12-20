@@ -51,7 +51,7 @@ Domain object classes can have a lot of long and similarly named fields:
 
 ### The solution
 These issues can be eliminated by using terms and values from domain ubiquitous language in the source code.
-The following describes how to refactor the code to achieve that.
+The following describes how the code can be refactored to achieve that.
 The refactor is done iteratively, step by step, so you can compare what has been changed since previous step.
 Each step has its own branch, from step-01 to step-08, so you can compare them using git diff.
 If you want to quickly jump to the final implementation go to [step-08 branch](https://github.com/mkopylec/storage-value-objects-demo/tree/step-08).
