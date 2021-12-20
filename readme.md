@@ -18,7 +18,7 @@ This kind of implementation suffers from several issues:
 
 ##### Issue 1
 Computations on domain objects can be split into multiple methods invocations causing the result to be inconsistent:
-- [calculating container items total weight is split into "calculate weight value" and "calculate weight unit"](/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L28-L32);
+- [calculating container items total weight is split into "calculate weight value" and "calculate weight unit"](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L28-L32);
   [these methods needs to be invoked one after another to prevent items modification during total weight calculation](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L18-L19)
 
 ##### Issue 2
