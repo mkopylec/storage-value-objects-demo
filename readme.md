@@ -19,27 +19,27 @@ This kind of implementation suffers from several issues:
 ##### Issue 1
 Computations on domain objects can be split into multiple methods invocations causing the result to be inconsistent:
 - [calculating container items total weight is split into "calculate weight value" and "calculate weight unit"](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L28-L32);
-  [these methods needs to be invoked one after another to prevent items modification during total weight calculation](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L18-L19)
+  [these methods needs to be invoked one after another to prevent items modification during total weight calculation](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L18-L19)
 
 ##### Issue 2
 Some domain logic can be duplicated:
-- weight value invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L19) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L21)
-- weight unit invariant is checked in [container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L20) and [item](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L22)
+- weight value invariant is checked in [container](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L19) and [item](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L21)
+- weight unit invariant is checked in [container](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L20) and [item](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Item.kt#L22)
 
 ##### Issue 3
 Methods and constructors arguments can be accidentally passed in wrong order because many of them have the same type:
-- [container identifier can be passed as maximum weight unit when constructing the container](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L11)
-- [item name can be passed as container identifier when loading container by identifier](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L15)
-- [container maximum weight value can be passed as container items weight value](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L14)
+- [container identifier can be passed as maximum weight unit when constructing the container](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L11)
+- [item name can be passed as container identifier when loading container by identifier](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L15)
+- [container maximum weight value can be passed as container items weight value](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L14)
 - and so on...
 
 ##### Issue 4
 It's hard to catch only domain invariant violations in application logic layer because the exception type used for the violations can also be the type of exception thrown from elsewhere:
-- when invariant is violated an `IllegalArgumentException` is thrown but [the container repository implementation can also throw it](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/ContainerRepository.kt#L5-L6)
+- when invariant is violated an `IllegalArgumentException` is thrown but [the container repository implementation can also throw it](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/ContainerRepository.kt#L5-L6)
 
 ##### Issue 5
 It's hard to catch only use case violations in the api layer because the exception type used for the violations can also be the type of exception thrown from elsewhere:
-- when use case is violated an `IllegalStateException` is thrown but [the container repository implementation can also throw it](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/ContainerRepository.kt#L5-L6)
+- when use case is violated an `IllegalStateException` is thrown but [the container repository implementation can also throw it](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/ContainerRepository.kt#L5-L6)
 
 ##### Issue 6
 It's hard to map domain invariant violation to some meaningful error code because all the violations are of the same type:
@@ -47,14 +47,14 @@ It's hard to map domain invariant violation to some meaningful error code becaus
 
 ##### Issue 7
 Domain object classes can have a lot of long and similarly named fields:
-- [container has "maximum weight value" and "maximum weight unit" fields](https://github.com/mkopylec/storage-value-objects-demo/blob/step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L10-L11)
+- [container has "maximum weight value" and "maximum weight unit" fields](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Container.kt#L10-L11)
 
 ### The solution
 These issues can be eliminated by using terms and values from domain ubiquitous language in the source code.
 The following describes how the code can be refactored to achieve that.
 The refactor is done iteratively, step by step, so you can compare what has been changed since previous step.
 Each step has its own branch, from step-01 to step-08, so you can compare them using git diff.
-If you want to quickly jump to the final implementation go to [step-08 branch](https://github.com/mkopylec/storage-value-objects-demo/tree/step-08).
+If you want to quickly jump to the final implementation go to [step-08 branch](/../../tree/step-08).
 
 ##### Step 1 - start
 The implementation uses custom classes only for aggregate (container) and for collection type inside aggregate (item).
