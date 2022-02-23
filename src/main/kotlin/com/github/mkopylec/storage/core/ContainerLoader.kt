@@ -1,14 +1,10 @@
 package com.github.mkopylec.storage.core
 
-import com.github.mkopylec.storage.core.LoadedContainer.InsertedItem
 import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container
-import com.github.mkopylec.storage.core.container.Container.ItemsQuantity
+import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
 import com.github.mkopylec.storage.core.container.Item
-import com.github.mkopylec.storage.core.container.Item.Name
-import com.github.mkopylec.storage.core.container.Weight.Unit
-import com.github.mkopylec.storage.core.container.Weight.Value
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -18,27 +14,22 @@ class ContainerLoader(
 
     fun loadContainer(containerToLoad: ContainerToLoad): LoadedContainer = try {
         val container = containers.loadContainer(containerToLoad)
-        LoadedContainer(
-            container.maximumWeight.value,
-            container.maximumWeight.unit,
-            container.itemsQuantity,
-            container.itemsWeight?.value,
-            container.itemsWeight?.unit,
-            items = container.mapItems { InsertedItem(it.identifier, it.name, it.weight.value, it.weight.unit) }
-        )
+        LoadedContainer(container)
     } catch (e: InvariantViolation) {
         throw IllegalStateException("Container not loaded", e)
     }
 }
 
-data class ContainerToLoad(
-    private val identifier: String
+class ContainerToLoad(
+    identifier: String
 ) {
 
-    fun identifier() = Container.Identifier(identifier)
+    val identifier = Identifier(identifier)
+
+    override fun toString(): String = "ContainerToLoad(identifier=$identifier)"
 }
 
-data class LoadedContainer private constructor(
+class LoadedContainer private constructor(
     val maximumWeightValue: BigDecimal,
     val maximumWeightUnit: String,
     val itemsQuantity: Int,
@@ -47,17 +38,26 @@ data class LoadedContainer private constructor(
     val items: List<InsertedItem>
 ) {
 
-    constructor(maximumWeightValue: Value, maximumWeightUnit: Unit, itemsQuantity: ItemsQuantity, itemsWeightValue: Value?, itemsWeightUnit: Unit?, items: List<InsertedItem>) :
-            this(maximumWeightValue.value, maximumWeightUnit.value, itemsQuantity.value, itemsWeightValue?.value, itemsWeightUnit?.value, items)
+    constructor(container: Container) : this(
+        container.maximumWeight.value.value,
+        container.maximumWeight.unit.value,
+        container.itemsQuantity.value,
+        container.itemsWeight?.value?.value,
+        container.itemsWeight?.unit?.value,
+        container.mapItems { InsertedItem(it) }
+    )
 
-    data class InsertedItem private constructor(
+    override fun toString(): String = "LoadedContainer(maximumWeightValue=$maximumWeightValue, maximumWeightUnit='$maximumWeightUnit', itemsQuantity=$itemsQuantity, itemsWeightValue=$itemsWeightValue, itemsWeightUnit=$itemsWeightUnit, items=$items)"
+
+    class InsertedItem private constructor(
         val identifier: UUID,
         val name: String,
         val weightValue: BigDecimal,
         val weightUnit: String
     ) {
 
-        constructor(identifier: Item.Identifier, name: Name, weightValue: Value, weightUnit: Unit) :
-                this(identifier.value, name.value, weightValue.value, weightUnit.value)
+        constructor(item: Item) : this(item.identifier.value, item.name.value, item.weight.value.value, item.weight.unit.value)
+
+        override fun toString(): String = "InsertedItem(identifier=$identifier, name='$name', weightValue=$weightValue, weightUnit='$weightUnit')"
     }
 }
