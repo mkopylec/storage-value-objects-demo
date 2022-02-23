@@ -1,6 +1,6 @@
 package com.github.mkopylec.storage.core
 
-import com.github.mkopylec.storage.core.container.Container
+import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
 import com.github.mkopylec.storage.core.container.Item
 import com.github.mkopylec.storage.core.container.Item.Name
@@ -17,7 +17,7 @@ class ContainerItemInserter(
         val container = containers.loadContainer(itemToInsert)
         val item = containers.createItem(itemToInsert)
         container.insertItem(item)
-        val insertedItem = InsertedItem(item.identifier)
+        val insertedItem = InsertedItem(item)
         containers.saveContainer(container)
         insertedItem
     } catch (e: IllegalArgumentException) {
@@ -25,25 +25,26 @@ class ContainerItemInserter(
     }
 }
 
-data class ItemToInsert(
-    private val name: String,
-    private val weightValue: BigDecimal,
-    private val weightUnit: String,
-    private val containerIdentifier: String
+class ItemToInsert(
+    name: String,
+    weightValue: BigDecimal,
+    weightUnit: String,
+    containerIdentifier: String
 ) {
 
-    fun name() = Name(name)
-    fun weightValue() = Value(weightValue)
-    fun weightUnit() = Unit.from(weightUnit)
-    fun containerIdentifier() = Container.Identifier(containerIdentifier)
+    val name = Name(name)
+    val weightValue = Value(weightValue)
+    val weightUnit = Unit.from(weightUnit)
+    val containerIdentifier = Identifier(containerIdentifier)
+
+    override fun toString(): String = "ItemToInsert(name=$name, weightValue=$weightValue, weightUnit=$weightUnit, containerIdentifier=$containerIdentifier)"
 }
 
-data class InsertedItem private constructor(
+class InsertedItem private constructor(
     val identifier: UUID
 ) {
 
-    companion object {
+    constructor(item: Item) : this(item.identifier.value)
 
-        operator fun invoke(identifier: Item.Identifier) = InsertedItem(identifier.value)
-    }
+    override fun toString(): String = "InsertedItem(identifier=$identifier)"
 }
