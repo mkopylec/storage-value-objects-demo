@@ -32,10 +32,10 @@ class ItemToInsert(
     containerIdentifier: String
 ) {
 
-    val name = Name(name)
-    val weightValue = Value(weightValue)
-    val weightUnit = Unit.from(weightUnit)
-    val containerIdentifier = Identifier(containerIdentifier)
+    val name by lazy { Name(name) }
+    val weightValue by lazy { Value(weightValue) }
+    val weightUnit by lazy { Unit.from(weightUnit) }
+    val containerIdentifier by lazy { Identifier(containerIdentifier) }
 
     override fun toString(): String = "ItemToInsert(name=$name, weightValue=$weightValue, weightUnit=$weightUnit, containerIdentifier=$containerIdentifier)"
 }

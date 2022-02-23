@@ -24,9 +24,9 @@ class ContainerToAdd(
     maximumWeightUnit: String
 ) {
 
-    val identifier = Identifier(identifier)
-    val maximumWeightValue = Value(maximumWeightValue)
-    val maximumWeightUnit = Unit.from(maximumWeightUnit)
+    val identifier by lazy { Identifier(identifier) }
+    val maximumWeightValue by lazy { Value(maximumWeightValue) }
+    val maximumWeightUnit by lazy { Unit.from(maximumWeightUnit) }
 
     override fun toString(): String = "ContainerToAdd(identifier=$identifier, maximumWeightValue=$maximumWeightValue, maximumWeightUnit=$maximumWeightUnit)"
 }
