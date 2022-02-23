@@ -3,7 +3,7 @@ package com.github.mkopylec.storage.core.container
 import java.math.BigDecimal
 
 class Container private constructor(
-    val identifier: String,
+    identifier: String,
     maximumWeightValue: BigDecimal,
     maximumWeightUnit: String,
     items: List<Item>
@@ -11,16 +11,13 @@ class Container private constructor(
 
     constructor(identifier: String, maximumWeightValue: BigDecimal, maximumWeightUnit: String) : this(identifier, maximumWeightValue, maximumWeightUnit, mutableListOf())
 
+    val identifier = Identifier(identifier)
     val maximumWeight = Weight(maximumWeightValue, maximumWeightUnit)
-
-    init {
-        if (!identifier.matches(identifierPattern)) throw IllegalArgumentException("Invalid container identifier: identifier=$identifier")
-    }
 
     private val items: MutableList<Item> = items.toMutableList()
 
-    val itemsQuantity: Int
-        get() = items.size
+    val itemsQuantity: ItemsQuantity
+        get() = ItemsQuantity(items.size)
 
     val itemsWeight: Weight?
         get() = items.map { it.weight }.reduceOrNull { sum, addend -> sum + addend }
@@ -43,8 +40,24 @@ class Container private constructor(
 
     override fun toString(): String = "Container(identifier='$identifier', maximumWeight=$maximumWeight, items=$items)"
 
-    companion object {
+    @JvmInline
+    value class Identifier(val value: String) {
 
-        private val identifierPattern = Regex("[A-Z]{8}")
+        init {
+            if (!value.matches(pattern)) throw IllegalArgumentException("Invalid container identifier: identifier=$value")
+        }
+
+        override fun toString(): String = value
+
+        companion object {
+
+            private val pattern = Regex("[A-Z]{8}")
+        }
+    }
+
+    @JvmInline
+    value class ItemsQuantity(val value: Int) {
+
+        override fun toString(): String = value.toString()
     }
 }
