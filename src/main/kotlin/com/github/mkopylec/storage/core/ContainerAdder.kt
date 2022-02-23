@@ -19,15 +19,17 @@ class ContainerAdder(
     }
 }
 
-data class ContainerToAdd(
-    private val identifier: String,
-    private val maximumWeightValue: BigDecimal,
-    private val maximumWeightUnit: String
+class ContainerToAdd(
+    identifier: String,
+    maximumWeightValue: BigDecimal,
+    maximumWeightUnit: String
 ) {
 
-    fun identifier() = Identifier(identifier)
-    fun maximumWeightValue() = Value(maximumWeightValue)
-    fun maximumWeightUnit() = Unit.from(maximumWeightUnit)
+    val identifier = Identifier(identifier)
+    val maximumWeightValue = Value(maximumWeightValue)
+    val maximumWeightUnit = Unit.from(maximumWeightUnit)
+
+    override fun toString(): String = "ContainerToAdd(identifier=$identifier, maximumWeightValue=$maximumWeightValue, maximumWeightUnit=$maximumWeightUnit)"
 }
 
 private class ContainerNotAdded(violation: InvariantViolation) : UseCaseViolation(violation)
