@@ -16,7 +16,7 @@ class ContainerLoader(
         val container = containers.loadContainer(containerToLoad)
         LoadedContainer(container)
     } catch (e: InvariantViolation) {
-        throw IllegalStateException("Container not loaded", e)
+        throw ContainerNotLoaded(e)
     }
 }
 
@@ -61,3 +61,5 @@ class LoadedContainer private constructor(
         override fun toString(): String = "InsertedItem(identifier=$identifier, name='$name', weightValue=$weightValue, weightUnit='$weightUnit')"
     }
 }
+
+private class ContainerNotLoaded(violation: InvariantViolation) : UseCaseViolation(violation)
