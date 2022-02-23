@@ -1,6 +1,9 @@
 package com.github.mkopylec.storage.core
 
+import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
+import com.github.mkopylec.storage.core.container.Weight.Unit
+import com.github.mkopylec.storage.core.container.Weight.Value
 import java.math.BigDecimal
 
 class ContainerAdder(
@@ -15,8 +18,15 @@ class ContainerAdder(
     }
 }
 
-data class ContainerToAdd(
-    val identifier: String,
-    val maximumWeightValue: BigDecimal,
-    val maximumWeightUnit: String
-)
+class ContainerToAdd(
+    identifier: String,
+    maximumWeightValue: BigDecimal,
+    maximumWeightUnit: String
+) {
+
+    val identifier by lazy { Identifier(identifier) }
+    val maximumWeightValue by lazy { Value(maximumWeightValue) }
+    val maximumWeightUnit by lazy { Unit.from(maximumWeightUnit) }
+
+    override fun toString(): String = "ContainerToAdd(identifier=$identifier, maximumWeightValue=$maximumWeightValue, maximumWeightUnit=$maximumWeightUnit)"
+}
