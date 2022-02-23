@@ -1,5 +1,6 @@
 package com.github.mkopylec.storage.core
 
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
 import com.github.mkopylec.storage.core.container.Weight.Unit
@@ -13,7 +14,7 @@ class ContainerAdder(
     fun addContainer(containerToAdd: ContainerToAdd) = try {
         val container = containers.createContainer(containerToAdd)
         containers.saveContainer(container)
-    } catch (e: IllegalArgumentException) {
+    } catch (e: InvariantViolation) {
         throw IllegalStateException("Container not added", e)
     }
 }
