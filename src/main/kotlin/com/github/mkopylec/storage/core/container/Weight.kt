@@ -1,6 +1,8 @@
 package com.github.mkopylec.storage.core.container
 
 import com.github.mkopylec.storage.core.common.InvariantViolation
+import com.github.mkopylec.storage.core.container.Weight.Unit.Kilogram
+import com.github.mkopylec.storage.core.container.Weight.Unit.Tonne
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 import java.math.BigDecimal.valueOf
@@ -14,8 +16,8 @@ class Weight(
 
     private fun to(unit: Unit): Weight = when (unit) {
         this.unit -> this
-        is Unit.Kilogram -> Weight(value * 1000, unit)
-        is Unit.Tonne -> Weight(value / 1000, unit)
+        is Kilogram -> Weight(value * 1000, unit)
+        is Tonne -> Weight(value / 1000, unit)
     }
 
     override fun compareTo(other: Weight): Int = value.compareTo(other.to(unit).value)
