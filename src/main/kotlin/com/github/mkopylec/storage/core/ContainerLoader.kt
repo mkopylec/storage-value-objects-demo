@@ -11,12 +11,14 @@ class ContainerLoader(
 
     fun loadContainer(containerToLoad: ContainerToLoad): LoadedContainer = try {
         val container = containers.loadContainer(containerToLoad)
+        val maximumWeight = container.maximumWeight
+        val itemsWeight = container.itemsWeight
         LoadedContainer(
-            container.maximumWeight.value.value,
-            container.maximumWeight.unit.value,
+            maximumWeight.value.value,
+            maximumWeight.unit.value,
             container.itemsQuantity.value,
-            container.itemsWeight?.value?.value,
-            container.itemsWeight?.unit?.value,
+            itemsWeight?.value?.value,
+            itemsWeight?.unit?.value,
             items = container.mapItems { InsertedItem(it.identifier.value, it.name.value, it.weight.value.value, it.weight.unit.value) }
         )
     } catch (e: IllegalArgumentException) {
