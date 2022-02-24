@@ -29,7 +29,7 @@ Some domain logic can be duplicated:
 ##### Issue 3
 Methods and constructors arguments can be accidentally passed in wrong order because many of them have the same type:
 - [container identifier can be passed as maximum weight unit when constructing the container](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L11)
-- [item name can be passed as container identifier when loading container by identifier](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L15)
+- [item name can be passed as container identifier when loading container by identifier](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/container/Containers.kt#L17)
 - [container maximum weight value can be passed as container items weight value](/../step-01/src/main/kotlin/com/github/mkopylec/storage/core/ContainerLoader.kt#L14)
 - and so on...
 
