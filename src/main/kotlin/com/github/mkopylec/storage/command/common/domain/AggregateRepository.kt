@@ -7,7 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
 abstract class AggregateRepository<A : Aggregate<I>, I : AggregateIdentifier>(
-    protected open val eventPublisher: EventPublisher // Needs to be open, otherwise eventPublisher is null
+    protected open val eventPublisher: EventPublisher // Needs to be open, otherwise eventPublisher is null. Cannot use Spring ApplicationEventPublisher because there is no way to publish events synchronously, and this is needed for tests.
 ) {
     protected val logger: Logger = getLogger(javaClass)
 
