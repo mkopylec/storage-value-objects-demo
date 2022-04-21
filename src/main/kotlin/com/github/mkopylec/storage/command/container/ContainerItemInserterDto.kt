@@ -9,7 +9,7 @@ import com.github.mkopylec.storage.command.container.domain.WeightValue
 import java.math.BigDecimal
 import java.util.UUID
 
-class ItemToInsert(
+class ItemToInsert private constructor(
     name: String,
     weightValue: BigDecimal,
     weightUnit: String

@@ -7,7 +7,7 @@ import com.github.mkopylec.storage.command.container.domain.WeightUnit
 import com.github.mkopylec.storage.command.container.domain.WeightValue
 import java.math.BigDecimal
 
-class ContainerToAdd(
+class ContainerToAdd private constructor(
     identifier: String,
     maximumWeightValue: BigDecimal,
     maximumWeightUnit: String
