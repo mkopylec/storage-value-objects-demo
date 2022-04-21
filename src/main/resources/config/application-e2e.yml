@@ -1,0 +1,4 @@
+storage:
+  container:
+    queries:
+      asynchronous-model-update: false

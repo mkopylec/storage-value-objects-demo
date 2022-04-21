@@ -1,0 +1,16 @@
+storage:
+  common:
+    infrastructure:
+      mongodb:
+        timeout:
+          connect: 100ms
+          read: 500ms
+  container:
+    queries:
+      asynchronous-model-update: true
+
+
+spring:
+  mongodb:
+    embedded:
+      version: 4.4.13
