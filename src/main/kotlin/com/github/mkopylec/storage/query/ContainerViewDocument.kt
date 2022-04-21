@@ -29,7 +29,7 @@ class ContainerViewDocument private constructor(
         const val CONTAINER_ITEMS_FIELD = "items"
     }
 
-    class ItemViewDocument(
+    class ItemViewDocument private constructor(
         val identifier: UUID,
         val name: String,
         val weightInKilograms: BigDecimal
