@@ -12,7 +12,7 @@ abstract class AggregateRepository<A : Aggregate<I>, I : AggregateIdentifier>(
     protected val logger: Logger = getLogger(javaClass)
 
     suspend fun save(aggregate: A) = when (saveAggregate(aggregate)) {
-        SUCCESS -> aggregate.forEachEvent { eventPublisher.publishEvent(it) }
+        SUCCESS -> aggregate.publishEvents(eventPublisher)
         CONCURRENT_MODIFICATION_REJECTED -> throw concurrentAggregateModificationViolation(aggregate.identifier)
     }
 
