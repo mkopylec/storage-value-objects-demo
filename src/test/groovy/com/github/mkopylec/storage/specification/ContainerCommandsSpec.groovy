@@ -1,6 +1,5 @@
-package com.github.mkopylec.storage.specification.container
+package com.github.mkopylec.storage.specification
 
-import com.github.mkopylec.storage.specification.BasicSpec
 import com.github.mkopylec.storage.utils.api.requests.ContainerToAdd
 import com.github.mkopylec.storage.utils.api.requests.ItemToInsert
 
