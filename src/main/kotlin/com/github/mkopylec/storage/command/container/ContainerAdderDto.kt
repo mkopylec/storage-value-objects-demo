@@ -1,5 +1,7 @@
 package com.github.mkopylec.storage.command.container
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY
 import com.github.mkopylec.storage.command.container.domain.ContainerIdentifier
 import com.github.mkopylec.storage.command.container.domain.WeightUnit
 import com.github.mkopylec.storage.command.container.domain.WeightValue
@@ -15,6 +17,7 @@ class ContainerToAdd(
     val maximumWeightUnit by lazy { WeightUnit.from(maximumWeightUnit) }
 }
 
+@JsonAutoDetect(fieldVisibility = ANY)
 class ContainerAddingViolation(
     private val violation: ContainerAddingViolationType
 )
