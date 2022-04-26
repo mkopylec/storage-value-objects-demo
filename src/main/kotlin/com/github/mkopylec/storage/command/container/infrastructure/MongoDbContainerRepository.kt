@@ -27,9 +27,5 @@ class MongoDbContainerRepository(
     }
 
     override suspend fun findAggregate(identifier: ContainerIdentifier): Container? =
-        try {
-            mongoDb.findById(identifier.value, ContainerDocument::class.java).awaitSingleOrNull()?.toContainer()
-        } catch (e: Exception) {
-            throw IllegalStateException("Error finding container by identifier", e) // Need to wrap business rule violations to throw HTTP 500 from endpoints.
-        }
+        mongoDb.findById(identifier.value, ContainerDocument::class.java).awaitSingleOrNull()?.toContainer()
 }

@@ -7,7 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
 abstract class AggregateRepository<A : Aggregate<I>, I : AggregateIdentifier>(
-    protected open val eventPublisher: EventPublisher // Needs to be open, otherwise eventPublisher is null. Cannot use Spring ApplicationEventPublisher because there is no way to publish events synchronously, and this is needed for tests.
+    protected open val eventPublisher: EventPublisher // Needs to be open (and therefore protected), otherwise eventPublisher is null. Cannot use Spring ApplicationEventPublisher because there is no way to publish events synchronously, and this is needed for tests.
 ) {
     protected val logger: Logger = getLogger(javaClass)
 
@@ -16,7 +16,11 @@ abstract class AggregateRepository<A : Aggregate<I>, I : AggregateIdentifier>(
         CONCURRENT_MODIFICATION_REJECTED -> throw concurrentAggregateModificationViolation(aggregate.identifier)
     }
 
-    suspend fun find(identifier: I): A = findAggregate(identifier) ?: throw missingAggregateViolation(identifier)
+    suspend fun find(identifier: I): A = try {
+        findAggregate(identifier)
+    } catch (violation: BusinessRuleViolation) {
+        throw IllegalStateException("Error finding aggregate by identifier", violation) // Need to wrap business rule violations to throw HTTP 500 from endpoints.
+    } ?: throw missingAggregateViolation(identifier)
 
     protected abstract suspend fun saveAggregate(aggregate: A): AggregateSavingResult
 
