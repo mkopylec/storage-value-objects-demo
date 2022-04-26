@@ -10,13 +10,13 @@ import java.math.BigDecimal
 import java.util.UUID
 
 class ItemToInsert private constructor(
-    name: String,
-    weightValue: BigDecimal,
-    weightUnit: String
+    private val name: String, // Need to be fields for OpenApi doc to work properly
+    private val weightValue: BigDecimal,
+    private val weightUnit: String
 ) {
-    val name by lazy { ItemName(name) }
-    val weightValue by lazy { WeightValue(weightValue) }
-    val weightUnit by lazy { WeightUnit.from(weightUnit) }
+    fun name() = ItemName(name)
+    fun weightValue() = WeightValue(weightValue)
+    fun weightUnit() = WeightUnit.from(weightUnit)
 }
 
 @JsonAutoDetect(fieldVisibility = ANY)

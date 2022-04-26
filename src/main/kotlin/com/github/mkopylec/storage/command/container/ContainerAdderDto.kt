@@ -8,13 +8,13 @@ import com.github.mkopylec.storage.command.container.domain.WeightValue
 import java.math.BigDecimal
 
 class ContainerToAdd private constructor(
-    identifier: String,
-    maximumWeightValue: BigDecimal,
-    maximumWeightUnit: String
+    private val identifier: String, // Need to be fields for OpenApi doc to work properly
+    private val maximumWeightValue: BigDecimal,
+    private val maximumWeightUnit: String
 ) {
-    val identifier by lazy { ContainerIdentifier(identifier) }
-    val maximumWeightValue by lazy { WeightValue(maximumWeightValue) }
-    val maximumWeightUnit by lazy { WeightUnit.from(maximumWeightUnit) }
+    fun identifier() = ContainerIdentifier(identifier)
+    fun maximumWeightValue() = WeightValue(maximumWeightValue)
+    fun maximumWeightUnit() = WeightUnit.from(maximumWeightUnit)
 }
 
 @JsonAutoDetect(fieldVisibility = ANY)

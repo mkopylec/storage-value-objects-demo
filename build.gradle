@@ -4,7 +4,7 @@ buildscript {
         kotlinxCoroutinesVersion = '1.6.1'
         springBootVersion = '2.6.6'
         jacksonVersion = '2.13.2'
-        springdocVersion = '1.6.7'
+        springdocVersion = '1.6.8'
         resilience4jVersion = '1.7.1'
         embeddedMongoVersion = '3.4.5'
         spockVersion = '2.1-groovy-3.0'
@@ -36,6 +36,7 @@ dependencies {
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-reactor', version: kotlinxCoroutinesVersion
     implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-jdk8', version: kotlinxCoroutinesVersion
     implementation group: 'org.springdoc', name: 'springdoc-openapi-webflux-ui', version: springdocVersion
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-kotlin', version: springdocVersion
     implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: jacksonVersion
     implementation group: 'io.github.resilience4j', name: 'resilience4j-kotlin', version: resilience4jVersion
     implementation group: 'io.github.resilience4j', name: 'resilience4j-spring-boot2', version: resilience4jVersion

@@ -35,8 +35,8 @@ class ContainerItemInserter(
 
     @PutMapping("/{identifier}/items")
     suspend fun insertItemInContainer(@PathVariable identifier: TargetContainerIdentifier, @RequestBody itemToInsert: ItemToInsert): InsertedItem {
-        val weight = Weight(itemToInsert.weightValue, itemToInsert.weightUnit)
-        val item = Item(itemToInsert.name, weight)
+        val weight = Weight(itemToInsert.weightValue(), itemToInsert.weightUnit())
+        val item = Item(itemToInsert.name(), weight)
         val container = repository.find(identifier.containerIdentifier)
         container.insertItem(item)
         repository.save(container)

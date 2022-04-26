@@ -26,8 +26,8 @@ class ContainerAdder(
 
     @PostMapping
     suspend fun addContainer(@RequestBody containerToAdd: ContainerToAdd) {
-        val maximumWeight = Weight(containerToAdd.maximumWeightValue, containerToAdd.maximumWeightUnit)
-        val container = Container(containerToAdd.identifier, maximumWeight)
+        val maximumWeight = Weight(containerToAdd.maximumWeightValue(), containerToAdd.maximumWeightUnit())
+        val container = Container(containerToAdd.identifier(), maximumWeight)
         repository.save(container)
     }
 
