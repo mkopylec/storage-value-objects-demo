@@ -31,7 +31,7 @@ class ContainerAdder(
         repository.save(container)
     }
 
-    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY) // Must be present to make springdoc openapi work
     @ExceptionHandler(InvalidContainerIdentifier::class)
     fun handleInvalidContainerIdentifier(violation: InvalidContainerIdentifier): ContainerAddingViolation = handle(violation, INVALID_CONTAINER_IDENTIFIER)
 
