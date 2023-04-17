@@ -1,5 +1,7 @@
 package com.github.mkopylec.storage.core.container
 
+import com.github.mkopylec.storage.core.common.InvariantViolation
+
 class Container private constructor(
     val identifier: Identifier,
     val maximumWeight: Weight,
@@ -19,14 +21,7 @@ class Container private constructor(
     fun insertItem(item: Item) {
         val weight = itemsWeight
         if (weight != null && weight + item.weight > maximumWeight)
-            throw IllegalArgumentException(
-                "Container maximum weight exceeded: " +
-                        "itemIdentifier=${item.identifier}, " +
-                        "itemWeight=${item.weight}, " +
-                        "identifier=$identifier, " +
-                        "itemsWeight=$weight, " +
-                        "maximumWeight=$maximumWeight"
-            )
+            throw ContainerMaximumWeightExceeded(item.identifier, item.weight, identifier, weight, maximumWeight)
         items.add(item)
     }
 
@@ -38,7 +33,7 @@ class Container private constructor(
     value class Identifier(val value: String) {
 
         init {
-            if (!value.matches(pattern)) throw IllegalArgumentException("Invalid container identifier: identifier=$value")
+            if (!value.matches(pattern)) throw InvalidContainerIdentifier(value)
         }
 
         override fun toString(): String = value
@@ -55,3 +50,16 @@ class Container private constructor(
         override fun toString(): String = value.toString()
     }
 }
+
+private class InvalidContainerIdentifier(identifier: String) : InvariantViolation(listOf("identifier" to identifier))
+private class ContainerMaximumWeightExceeded(
+    itemIdentifier: Item.Identifier, itemWeight: Weight, containerIdentifier: Container.Identifier, containerCurrentWeight: Weight, containerMaximumWeight: Weight,
+) : InvariantViolation(
+    listOf(
+        "itemIdentifier" to itemIdentifier,
+        "itemWeight" to itemWeight,
+        "containerIdentifier" to containerIdentifier,
+        "containerCurrentWeight" to containerCurrentWeight,
+        "containerMaximumWeight" to containerMaximumWeight
+    )
+)

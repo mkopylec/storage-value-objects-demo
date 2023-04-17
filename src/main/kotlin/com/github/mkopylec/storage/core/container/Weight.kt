@@ -1,5 +1,6 @@
 package com.github.mkopylec.storage.core.container
 
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Weight.Unit.Kilogram
 import com.github.mkopylec.storage.core.container.Weight.Unit.Tonne
 import java.math.BigDecimal
@@ -27,7 +28,7 @@ class Weight(
     value class Value(val value: BigDecimal) : Comparable<Value> {
 
         init {
-            if (value <= ZERO) throw IllegalArgumentException("Invalid weight value: value=$value")
+            if (value <= ZERO) throw InvalidWeightValue(value)
         }
 
         operator fun plus(other: Value) = Value(value + other.value)
@@ -53,8 +54,11 @@ class Weight(
             fun from(value: String): Unit = when (value) {
                 Kilogram.value -> Kilogram
                 Tonne.value -> Tonne
-                else -> throw IllegalArgumentException("Invalid weight unit: unit=$value")
+                else -> throw InvalidWeightUnit(value)
             }
         }
     }
 }
+
+private class InvalidWeightValue(value: BigDecimal) : InvariantViolation(listOf("value" to value))
+private class InvalidWeightUnit(unit: String) : InvariantViolation(listOf("unit" to unit))

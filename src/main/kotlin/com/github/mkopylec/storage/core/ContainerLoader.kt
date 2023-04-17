@@ -1,5 +1,6 @@
 package com.github.mkopylec.storage.core
 
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container
 import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
@@ -14,7 +15,7 @@ class ContainerLoader(
     fun loadContainer(containerToLoad: ContainerToLoad): LoadedContainer = try {
         val container = containers.loadContainer(containerToLoad)
         LoadedContainer(container)
-    } catch (e: IllegalArgumentException) {
+    } catch (e: InvariantViolation) {
         throw IllegalStateException("Container not loaded", e)
     }
 }

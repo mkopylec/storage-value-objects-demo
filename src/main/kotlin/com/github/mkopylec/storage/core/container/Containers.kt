@@ -3,6 +3,7 @@ package com.github.mkopylec.storage.core.container
 import com.github.mkopylec.storage.core.ContainerToAdd
 import com.github.mkopylec.storage.core.ContainerToLoad
 import com.github.mkopylec.storage.core.ItemToInsert
+import com.github.mkopylec.storage.core.common.InvariantViolation
 import com.github.mkopylec.storage.core.container.Container.Identifier
 
 class Containers(
@@ -25,5 +26,7 @@ class Containers(
 
     fun loadContainer(containerToLoad: ContainerToLoad): Container = loadContainer(containerToLoad.identifier)
 
-    private fun loadContainer(identifier: Identifier): Container = repository.findByIdentifier(identifier) ?: throw IllegalArgumentException("Missing container: identifier=$identifier")
+    private fun loadContainer(identifier: Identifier): Container = repository.findByIdentifier(identifier) ?: throw MissingContainer(identifier)
 }
+
+private class MissingContainer(identifier: Identifier) : InvariantViolation(listOf("identifier" to identifier))
