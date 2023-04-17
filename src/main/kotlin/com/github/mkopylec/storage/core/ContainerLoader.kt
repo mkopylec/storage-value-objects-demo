@@ -1,7 +1,9 @@
 package com.github.mkopylec.storage.core
 
-import com.github.mkopylec.storage.core.LoadedContainer.InsertedItem
+import com.github.mkopylec.storage.core.container.Container
+import com.github.mkopylec.storage.core.container.Container.Identifier
 import com.github.mkopylec.storage.core.container.Containers
+import com.github.mkopylec.storage.core.container.Item
 import java.math.BigDecimal
 import java.util.UUID
 
@@ -11,26 +13,22 @@ class ContainerLoader(
 
     fun loadContainer(containerToLoad: ContainerToLoad): LoadedContainer = try {
         val container = containers.loadContainer(containerToLoad)
-        val maximumWeight = container.maximumWeight
-        val itemsWeight = container.itemsWeight
-        LoadedContainer(
-            maximumWeight.value.value,
-            maximumWeight.unit.value,
-            container.itemsQuantity.value,
-            itemsWeight?.value?.value,
-            itemsWeight?.unit?.value,
-            items = container.mapItems { InsertedItem(it.identifier.value, it.name.value, it.weight.value.value, it.weight.unit.value) }
-        )
+        LoadedContainer(container)
     } catch (e: IllegalArgumentException) {
         throw IllegalStateException("Container not loaded", e)
     }
 }
 
-data class ContainerToLoad(
-    val identifier: String
-)
+class ContainerToLoad(
+    identifier: String
+) {
 
-data class LoadedContainer(
+    val identifier = Identifier(identifier)
+
+    override fun toString(): String = "ContainerToLoad(identifier=$identifier)"
+}
+
+class LoadedContainer private constructor(
     val maximumWeightValue: BigDecimal,
     val maximumWeightUnit: String,
     val itemsQuantity: Int,
@@ -39,10 +37,26 @@ data class LoadedContainer(
     val items: List<InsertedItem>
 ) {
 
-    data class InsertedItem(
+    constructor(container: Container) : this(
+        container.maximumWeight.value.value,
+        container.maximumWeight.unit.value,
+        container.itemsQuantity.value,
+        container.itemsWeight?.value?.value,
+        container.itemsWeight?.unit?.value,
+        container.mapItems { InsertedItem(it) }
+    )
+
+    override fun toString(): String = "LoadedContainer(maximumWeightValue=$maximumWeightValue, maximumWeightUnit='$maximumWeightUnit', itemsQuantity=$itemsQuantity, itemsWeightValue=$itemsWeightValue, itemsWeightUnit=$itemsWeightUnit, items=$items)"
+
+    class InsertedItem private constructor(
         val identifier: UUID,
         val name: String,
         val weightValue: BigDecimal,
         val weightUnit: String
-    )
+    ) {
+
+        constructor(item: Item) : this(item.identifier.value, item.name.value, item.weight.value.value, item.weight.unit.value)
+
+        override fun toString(): String = "InsertedItem(identifier=$identifier, name='$name', weightValue=$weightValue, weightUnit='$weightUnit')"
+    }
 }
